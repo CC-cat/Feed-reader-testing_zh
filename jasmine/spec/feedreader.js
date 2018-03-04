@@ -28,6 +28,7 @@ $(function() {
          it('url of every feed should not null',function() {
             allFeeds.forEach(function(item) {
                 expect(item.url).not.toBeNull();
+                expect(item.length).not.toBe(0);
             });
         })
 
@@ -37,6 +38,7 @@ $(function() {
           it('name of every feed should not null',function() {
             allFeeds.forEach(function(item) {
                 expect(item.name).not.toBeNull();
+                expect(item.length).not.toBe(0);
             });
         })
     });
@@ -56,7 +58,9 @@ $(function() {
                 $menuIcon = $('.menu-icon-link');
             });
 
-
+            it('check menu hidden', function() {
+                expect($('body').hasClass('menu-hidden')).toBe(true);
+            });
 
          /* TODO:
           * 写一个测试用例保证当菜单图标被点击的时候菜单会切换可见状态。这个
@@ -73,30 +77,15 @@ $(function() {
 
     /* TODO: 13. 写一个叫做 "Initial Entries" 的测试用例 */
         describe('Initial Entries',function(){
-            beforeEach(function(done){
-                setTimeout(function(){
-                    done();
-                },1);
-            });
-
-        /* TODO:
-         * 写一个测试保证 loadFeed 函数被调用而且工作正常，即在 .feed 容器元素
-         * 里面至少有一个 .entry 的元素。
-         *
-         * 记住 loadFeed() 函数是异步的所以这个而是应该使用 Jasmine 的 beforeEach
-         * 和异步的 done() 函数。
-         */
-            it('The normal work',function(done){
-                expect($('.feed.entry').length).not.toBe(0);
-                done();
-            });
-
-            afterEach(function(done){
-                done();
-            },1000);
-
             beforeEach(function(done) {
-                loadFeed(0, done);
+                loadFeed(0, function() {
+                    console.log('done');
+                    done();
+                });
+            });
+            it('watch loadFeed', function() {
+                console.log(document.getElementsByClassName('entry').length);
+                expect(document.getElementsByClassName('entry').length).not.toBe(0);
             });
         });
 
